@@ -1,4 +1,4 @@
-#SyntexSentinal
+# SyntexSentinal
 
 A local-first, privacy-conscious application security auditing tool designed to analyze network diagrams, configuration files, and code snippets for vulnerabilities. Built for rapid offline threat modeling, it routes visual context and custom queries to a locally hosted Gemma 4 model, returning strictly formatted JSON audits and persisting results to a local database.
 
