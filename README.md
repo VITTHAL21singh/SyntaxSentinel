@@ -2,7 +2,7 @@
 
 A local-first, privacy-conscious application security auditing tool designed to analyze network diagrams, configuration files, and code snippets for vulnerabilities. Built for rapid offline threat modeling, it routes visual context and custom queries to a locally hosted Gemma 4 model, returning strictly formatted JSON audits and persisting results to a local database.
 
-Developed for the Hacktober/0x0 PIR4T3S Hackathon track.
+Developed for the HacktoberFest by OSDC
 
 ## Tech Stack
 *   **Backend:** Python, Flask
