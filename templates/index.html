@@ -3,33 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Name</title>
-    <link rel="stylesheet" href="/style.css"> 
+    <title>SyntexSentinal | Security Auditor</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts matching the design system -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="app-container">
-        <header>
-            <h1>APP NAME</h1>
-        </header>
-        
-        <!-- Top Panel: AI Responses -->
-        <main class="ai-responses" id="results">
-            <div id="loading" class="hidden">Analyzing...</div>
-            <div id="audit-output" class="hidden">
-                <p><strong>Vulnerability:</strong> <span id="res-vuln"></span></p>
-                <p><strong>Severity:</strong> <span id="res-sev" class="badge"></span></p>
-                <p><strong>Remediation:</strong> <span id="res-rem"></span></p>
-            </div>
-        </main>
+<body class="page-shell">
 
-        <!-- Bottom Panel: User Input & File Upload -->
-        <footer class="user-controls">
-            <input type="file" id="file-input" accept="image/*" hidden>
-            <button id="upload-btn" class="control-btn">Upload File</button>
-            <input type="text" id="user-query" placeholder="Add context or type a message..." disabled>
-            <button id="send-btn" class="control-btn">Send</button>
-        </footer>
-    </div>
+    <nav class="top-bar">
+        <div class="nav-container">
+            <span class="brand-logo">SYNTEXSENTINAL</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="hero-section">
+            <h1 class="hero-title">Offline <span class="highlight">Threat Modeling</span></h1>
+            <p class="hero-subtitle">Upload architecture diagrams or code for air-gapped vulnerability analysis via Gemma 4.</p>
+        </header>
+
+        <!-- Upload & Context Panel -->
+        <section class="card upload-card">
+            <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                <input type="file" id="file-input" accept="image/*" style="display: none;">
+                <p id="upload-text"><strong>Drag and drop</strong> an architecture diagram or code snippet here, or click to browse.</p>
+            </div>
+
+            <div class="action-row">
+                <input type="text" id="user-query" class="query-input" placeholder="Add context (e.g., 'Focus strictly on hardcoded secrets')">
+                <button id="send-btn" class="btn-primary">Run Audit</button>
+            </div>
+        </section>
+
+        <!-- Results Panel (Hidden by default) -->
+        <section class="card result-card" id="result-card" style="display: none;">
+            <h2 class="section-title">Audit Report</h2>
+            
+            <div class="result-group">
+                <span class="result-label">Vulnerability Detected</span>
+                <p id="vuln-title" class="result-value strong-text">--</p>
+            </div>
+            
+            <div class="result-group">
+                <span class="result-label">Severity</span>
+                <div><span id="vuln-severity" class="badge">--</span></div>
+            </div>
+            
+            <div class="result-group">
+                <span class="result-label">Remediation Steps</span>
+                <p id="vuln-remediation" class="result-value">--</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>SyntexSentinal - Local Security Auditing</p>
+    </footer>
+
     <script src="/js/system.js"></script>
 </body>
 </html>
