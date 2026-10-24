@@ -56,7 +56,12 @@ def analyze():
     try:
         audit_json = analyze_image(filepath)
 
-        # Log to SQLite via Prisma
+        if isinstance(audit_json, list):
+            if len(audit_json) > 0:
+                audit_json = audit_json[0]
+            else:
+                audit_json = {"vulnerability": "None found", "severity": "Info", "remediation": "N/A"}
+
         db.securitylog.create(
             data={
                 "vulnerability": audit_json.get("vulnerability", "Unknown"),
