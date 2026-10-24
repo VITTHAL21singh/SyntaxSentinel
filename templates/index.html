@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SyntexSentinal | Security Auditor</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SyntaxSentinel | Offline Security Auditor</title>
+    <link rel="stylesheet" href="/style.css">
     <!-- Fonts matching the design system -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
 </head>
@@ -12,8 +12,7 @@
 
     <nav class="top-bar">
         <div class="nav-container">
-            <span class="brand-logo">SYNTEXSENTINAL</span>
-            </div>
+            <span class="brand-logo">SYNTAXSENTINEL</span>
         </div>
     </nav>
 
@@ -25,19 +24,28 @@
 
         <!-- Upload & Context Panel -->
         <section class="card upload-card">
-            <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+            <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-label="Upload architecture diagram or code snippet">
                 <input type="file" id="file-input" accept="image/*" style="display: none;">
                 <p id="upload-text"><strong>Drag and drop</strong> an architecture diagram or code snippet here, or click to browse.</p>
+                <div id="file-preview" class="file-preview-info hidden"></div>
             </div>
 
             <div class="action-row">
                 <input type="text" id="user-query" class="query-input" placeholder="Add context (e.g., 'Focus strictly on hardcoded secrets')">
                 <button id="send-btn" class="btn-primary">Run Audit</button>
             </div>
+
+            <div id="error-banner" class="error-banner hidden" role="alert"></div>
+
+            <!-- Loading Indicator -->
+            <div id="loading-state" class="loading-container hidden">
+                <div class="spinner"></div>
+                <span>Analyzing threat surface with Gemma 4... Please wait.</span>
+            </div>
         </section>
 
         <!-- Results Panel (Hidden by default) -->
-        <section class="card result-card" id="result-card" style="display: none;">
+        <section class="card result-card hidden" id="result-card">
             <h2 class="section-title">Audit Report</h2>
             
             <div class="result-group">
@@ -58,7 +66,7 @@
     </main>
 
     <footer class="site-footer">
-        <p>SyntexSentinal - Local Security Auditing</p>
+        <p>SyntaxSentinel - Local Security Auditing</p>
     </footer>
 
     <script src="/js/system.js"></script>

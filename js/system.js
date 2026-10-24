@@ -1,72 +1,177 @@
-// UI Controls
-const uploadBtn = document.getElementById('upload-btn');
-const fileInput = document.getElementById('file-input');
-const sendBtn = document.getElementById('send-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    // UI Elements
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const uploadText = document.getElementById('upload-text');
+    const filePreview = document.getElementById('file-preview');
+    const userQuery = document.getElementById('user-query');
+    const sendBtn = document.getElementById('send-btn');
+    const errorBanner = document.getElementById('error-banner');
+    const loadingState = document.getElementById('loading-state');
+    const resultCard = document.getElementById('result-card');
 
-// Display Areas
-const loading = document.getElementById('loading');
-const auditOutput = document.getElementById('audit-output');
+    // Result Fields
+    const vulnTitle = document.getElementById('vuln-title');
+    const vulnSeverity = document.getElementById('vuln-severity');
+    const vulnRemediation = document.getElementById('vuln-remediation');
 
-// Data Spans
-const resVuln = document.getElementById('res-vuln');
-const resSev = document.getElementById('res-sev');
-const resRem = document.getElementById('res-rem');
+    let selectedFile = null;
 
-let selectedFile = null;
+    function showError(message) {
+        if (!errorBanner) return;
+        errorBanner.textContent = message;
+        errorBanner.classList.remove('hidden');
+    }
 
-// 1. Map the Orange 'Upload File' button to the hidden file input
-uploadBtn.addEventListener('click', () => {
-    fileInput.click();
-});
+    function clearError() {
+        if (!errorBanner) return;
+        errorBanner.textContent = '';
+        errorBanner.classList.add('hidden');
+    }
 
-// 2. Capture the selected file and provide visual feedback
-fileInput.addEventListener('change', (e) => {
-    if (e.target.files.length > 0) {
-        selectedFile = e.target.files[0];
-        // Truncate long file names for the button text
-        let fileName = selectedFile.name;
-        if (fileName.length > 15) fileName = fileName.substring(0, 15) + '...';
+    function handleFile(file) {
+        if (!file) return;
+
+        // Verify valid image type
+        const validExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.bmp', '.gif'];
+        const fileName = file.name.toLowerCase();
+        const isValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+        const isValidMime = file.type.startsWith('image/');
+
+        if (!isValidMime && !isValidExtension) {
+            showError('Invalid file type. Please upload an image (PNG, JPG, JPEG, WEBP, BMP, or GIF).');
+            return;
+        }
+
+        // Limit size to 16MB
+        if (file.size > 16 * 1024 * 1024) {
+            showError('File is too large. Maximum size is 16MB.');
+            return;
+        }
+
+        clearError();
+        selectedFile = file;
+
+        // Provide immediate visual feedback
+        const sizeFormatted = (file.size / 1024).toFixed(1);
+        dropZone.classList.add('has-file');
+        uploadText.innerHTML = `<strong>Selected:</strong> ${file.name}`;
         
-        uploadBtn.textContent = `Attached: ${fileName}`;
-        uploadBtn.style.background = 'var(--primary-green)'; 
-    }
-});
-
-// 3. Handle the 'Send' action and backend communication
-sendBtn.addEventListener('click', async () => {
-    if (!selectedFile) {
-        alert("Please upload a file before sending.");
-        return;
+        filePreview.textContent = `Size: ${sizeFormatted} KB | Type: ${file.type || 'image'}`;
+        filePreview.classList.remove('hidden');
     }
 
-    // Toggle loading state
-    auditOutput.classList.add('hidden');
-    loading.classList.remove('hidden');
+    // Trigger file browser when clicking drop zone
+    dropZone.addEventListener('click', (e) => {
+        if (e.target !== fileInput) {
+            fileInput.click();
+        }
+    });
 
-    const formData = new FormData();
-    formData.append('file', selectedFile);
+    // Keyboard accessibility for drop zone
+    dropZone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fileInput.click();
+        }
+    });
 
-    try {
-        const response = await fetch('/analyze', {
-            method: 'POST',
-            body: formData
+    // Capture file selection from input
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            handleFile(e.target.files[0]);
+        }
+    });
+
+    // Drag and drop event listeners
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.classList.add('drag-over');
         });
+    });
 
-        const data = await response.json();
+    ['dragleave', 'dragend'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZone.classList.remove('drag-over');
+        });
+    });
 
-        if (!response.ok) throw new Error(data.error || 'Server error');
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('drag-over');
 
-        // Inject the JSON response into the DOM
-        resVuln.textContent = data.vulnerability;
-        resSev.textContent = data.severity;
-        resRem.textContent = data.remediation;
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            handleFile(e.dataTransfer.files[0]);
+        }
+    });
 
-        // Display the final audit report
-        loading.classList.add('hidden');
-        auditOutput.classList.remove('hidden');
+    // Trigger audit on button click
+    sendBtn.addEventListener('click', async () => {
+        clearError();
 
-    } catch (error) {
-        alert(`Analysis failed: ${error.message}`);
-        loading.classList.add('hidden');
-    }
+        if (!selectedFile) {
+            showError('Please browse or drag & drop an image before running the audit.');
+            return;
+        }
+
+        // Set UI to loading state
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Auditing...';
+        loadingState.classList.remove('hidden');
+        resultCard.classList.add('hidden');
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('query', userQuery.value.trim());
+
+        try {
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || `Server responded with status ${response.status}`);
+            }
+
+            // Populate result fields
+            vulnTitle.textContent = data.vulnerability || 'No specific vulnerability noted';
+            
+            const rawSev = (data.severity || 'Info').trim();
+            vulnSeverity.textContent = rawSev;
+            vulnSeverity.className = 'badge';
+
+            const sevLower = rawSev.toLowerCase();
+            if (sevLower.includes('critical')) {
+                vulnSeverity.classList.add('badge-critical');
+            } else if (sevLower.includes('high')) {
+                vulnSeverity.classList.add('badge-high');
+            } else if (sevLower.includes('medium')) {
+                vulnSeverity.classList.add('badge-medium');
+            } else if (sevLower.includes('low')) {
+                vulnSeverity.classList.add('badge-low');
+            } else {
+                vulnSeverity.classList.add('badge-info');
+            }
+
+            vulnRemediation.textContent = data.remediation || 'No remediation required.';
+
+            // Reveal result card
+            resultCard.classList.remove('hidden');
+
+        } catch (error) {
+            showError(`Audit failed: ${error.message}`);
+        } finally {
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Run Audit';
+            loadingState.classList.add('hidden');
+        }
+    });
 });
