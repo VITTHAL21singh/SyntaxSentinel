@@ -20,8 +20,8 @@ Developed for the HacktoberFest by OSDC
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
-   cd your-repo
+   git clone https://github.com/VITTHAL21singh/SyntaxSentinal.git
+   cd SyntexSentinal
    ```
 
 2. **Set up the virtual environment**
