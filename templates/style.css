@@ -1,0 +1,130 @@
+:root {
+    --bg-light: #f1f5f9; 
+    --panel-light: #ffffff; 
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --primary-green: #10b981;
+    --orange-accent: #f97316;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+header h1 {
+    text-align: center;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+.ai-responses {
+    background-color: var(--panel-light);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    height: 50vh;
+    border-radius: 12px;
+    padding: 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-controls {
+    background-color: var(--panel-light);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#user-query {
+    flex-grow: 1;
+    padding: 12px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: var(--text-main);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+#user-query:focus {
+    outline: none;
+    border-color: var(--primary-green);
+}
+
+.control-btn {
+    padding: 12px 24px;
+    background: var(--primary-green);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+#upload-btn {
+    background: var(--orange-accent);
+}
+
+#upload-btn:hover {
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+}
+
+.hidden { display: none !important; }
+
+/* JSON Audit Result Styling */
+#audit-output {
+    text-align: left;
+    width: 100%;
+}
+
+#audit-output p {
+    margin: 12px 0;
+    font-size: 1.1rem;
+}
+
+.badge {
+    background: rgba(249, 115, 22, 0.15);
+    color: var(--orange-accent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--orange-accent);
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+#loading {
+    color: var(--primary-green);
+    font-weight: bold;
+    letter-spacing: 1px;
+}

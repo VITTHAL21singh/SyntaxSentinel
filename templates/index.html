@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Name</title>
+    <link rel="stylesheet" href="/style.css"> 
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>APP NAME</h1>
+        </header>
+        
+        <!-- Top Panel: AI Responses -->
+        <main class="ai-responses" id="results">
+            <div id="loading" class="hidden">Analyzing...</div>
+            <div id="audit-output" class="hidden">
+                <p><strong>Vulnerability:</strong> <span id="res-vuln"></span></p>
+                <p><strong>Severity:</strong> <span id="res-sev" class="badge"></span></p>
+                <p><strong>Remediation:</strong> <span id="res-rem"></span></p>
+            </div>
+        </main>
+
+        <!-- Bottom Panel: User Input & File Upload -->
+        <footer class="user-controls">
+            <input type="file" id="file-input" accept="image/*" hidden>
+            <button id="upload-btn" class="control-btn">Upload File</button>
+            <input type="text" id="user-query" placeholder="Add context or type a message..." disabled>
+            <button id="send-btn" class="control-btn">Send</button>
+        </footer>
+    </div>
+    <script src="/js/system.js"></script>
+</body>
+</html>

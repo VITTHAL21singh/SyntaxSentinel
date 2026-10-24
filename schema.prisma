@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-py"
+  interface = "sync"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Your database tables will go here
+model SecurityLog {
+  id              String   @id @default(uuid())
+  vulnerability   String
+  severity        String
+  remediation     String
+  createdAt       DateTime @default(now())
+}
