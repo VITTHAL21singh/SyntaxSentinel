@@ -67,4 +67,4 @@ Developed for the HacktoberFest by OSDC
 3. Click **Send** to route the query to Gemma 4. The parsed vulnerability, severity badge, and remediation steps will render on the UI and save to the SQLite database.
 
 ## WON IN OSDC HACKTOBERFEST'26
-![CERTIFICATE IMAGE](https://postimg.cc/BXZN5F7M)
+[![hacktoberfest-2026-fest-winner-certificate-2026-01a0d945-50f2-a32c-e2b6-80fb18a4403b-01a0d987-0c41-1.png](https://i.postimg.cc/jdP9bQH0/hacktoberfest-2026-fest-winner-certificate-2026-01a0d945-50f2-a32c-e2b6-80fb18a4403b-01a0d987-0c41-1.png)](https://postimg.cc/BXZN5F7M)
