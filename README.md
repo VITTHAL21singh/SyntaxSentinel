@@ -65,3 +65,6 @@ Developed for the HacktoberFest by OSDC
 1. Click **Attach Image** to upload a screenshot of a vulnerable code block, AWS IAM policy, or network architecture diagram.
 2. Provide specific audit instructions in the **Context** input box (e.g., "Ignore SQL injection, focus on hardcoded secrets").
 3. Click **Send** to route the query to Gemma 4. The parsed vulnerability, severity badge, and remediation steps will render on the UI and save to the SQLite database.
+
+## WON IN OSDC HACKTOBERFEST'26
+![CERTIFICATE IMAGE](https://postimg.cc/BXZN5F7M)
